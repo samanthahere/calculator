@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📱 Purple Neon Calculator</title>
+<style>
+body {
+  display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(-45deg, #1a0a3c, #3b1a89, #7b3fe4, #5a2db0);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  transition: 0.5s;
+}
+@keyframes gradientBG {0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+
+.calculator {
+  background: rgba(46,14,111,0.95); padding: 25px; border-radius: 20px;
+  box-shadow: 0 0 40px #7b3fe4; display: flex; flex-direction: column; align-items: center;
+  width: 320px; max-width: 90vw;
+}
+
+.display {
+  width: 100%; padding: 20px; font-size: 2.2rem; border: none; border-radius: 12px;
+  margin-bottom: 15px; text-align: right; background: #3b1a89; color: #fff;
+  box-shadow: inset 0 0 15px #7b3fe4; word-wrap: break-word;
+  transition: all 0.2s;
+}
+
+.display.pulse {
+  animation: neonPulse 0.3s;
+}
+
+@keyframes neonPulse {
+  0% { box-shadow: inset 0 0 15px #7b3fe4; }
+  50% { box-shadow: inset 0 0 30px #ff00ff; }
+  100% { box-shadow: inset 0 0 15px #7b3fe4; }
+}
+
+.buttons { display: grid; grid-template-columns: repeat(4, 1fr); grid-gap: 12px; width: 100%; }
+
+button {
+  padding: 20px; font-size: 1.3rem; border: none; border-radius: 12px;
+  background: #5a2db0; color: #fff; cursor: pointer;
+  box-shadow: 0 0 15px #7b3fe4,0 0 25px #ff00ff; transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+button::after {
+  content:''; position:absolute; top:0; left:-75%; width:50%; height:100%; background:rgba(255,255,255,0.15);
+  transform: skewX(-25deg);
+}
+button:hover::after {animation: shine 0.7s forwards;}
+@keyframes shine {0%{left:-75%}50%{left:125%}100%{left:125%}}
+button:hover {background:#7b3fe4; box-shadow:0 0 25px #ff00ff,0 0 35px #7b3fe4}
+
+.flash {animation: neonFlash 0.2s;}
+@keyframes neonFlash {0%{box-shadow:0 0 30px #ff00ff,0 0 50px #7b3fe4;}50%{box-shadow:0 0 50px #ff00ff,0 0 70px #7b3fe4;}100%{box-shadow:0 0 15px #7b3fe4,0 0 25px #ff00ff;}}
+
+.shake {animation: shakeAnim 0.3s;}
+@keyframes shakeAnim {0%{transform:translateX(0);}25%{transform:translateX(-5px);}50%{transform:translateX(5px);}75%{transform:translateX(-5px);}100%{transform:translateX(0);}}
+
+.btn-clear {background:#e04cd8;}
+.btn-equal {background:#ff00ff; grid-row: span 2;}
+.btn-zero {grid-column: span 2;}
+
+.toggle-container {margin-bottom:15px; display:flex; justify-content:center; width:100%;}
+.toggle {padding:8px 15px; border:none; border-radius:20px; background:#7b3fe4; color:#fff;
+  cursor:pointer; font-weight:bold; box-shadow:0 0 10px #ff00ff; transition: all 0.3s;}
+.toggle:hover {background:#ff00ff; box-shadow:0 0 20px #7b3fe4;}
+
+body.light {
+  background: linear-gradient(-45deg,#fff,#d3c1ff,#c0b0ff,#e6d9ff);
+}
+body.light .calculator { background: rgba(200,180,255,0.95); box-shadow: 0 0 20px #c0b0ff; }
+body.light .display { background:#e6d9ff; color:#3b1a89; box-shadow: inset 0 0 10px #c0b0ff; }
+body.light button {background:#c0b0ff; color:#3b1a89; box-shadow:0 0 10px #c0b0ff;}
+body.light button:hover {background:#d3c1ff; box-shadow:0 0 20px #a081ff;}
+
+@media(max-width:400px){.calculator{width:95vw}button{padding:18px;font-size:1.2rem}.display{font-size:2rem;padding:15px}}
+</style>
+</head>
+<body>
+<div class="calculator">
+  <div class="toggle-container">
+    <button class="toggle" onclick="toggleMode()">🌙 / ☀️</button>
+  </div>
+  <input type="text" class="display" id="display" disabled>
+  <div class="buttons">
+    <button onclick="pressButton(this)" class="btn btn-clear">AC</button>
+    <button onclick="pressButton(this)">+/-</button>
+    <button onclick="pressButton(this)">%</button>
+    <button onclick="pressButton(this)">/</button>
+
+    <button onclick="pressButton(this)">7</button>
+    <button onclick="pressButton(this)">8</button>
+    <button onclick="pressButton(this)">9</button>
+    <button onclick="pressButton(this)">*</button>
+
+    <button onclick="pressButton(this)">4</button>
+    <button onclick="pressButton(this)">5</button>
+    <button onclick="pressButton(this)">6</button>
+    <button onclick="pressButton(this)">-</button>
+
+    <button onclick="pressButton(this)">1</button>
+    <button onclick="pressButton(this)">2</button>
+    <button onclick="pressButton(this)">3</button>
+    <button onclick="pressButton(this)">+</button>
+
+    <button onclick="pressButton(this)" class="btn-zero">0</button>
+    <button onclick="pressButton(this)">.</button>
+    <button onclick="pressButton(this)" class="btn-equal">=</button>
+  </div>
+</div>
+
+<audio id="click-sound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+
+<script>
+const display=document.getElementById('display');
+const clickSound=document.getElementById('click-sound');
+let shouldReset=false;
+
+function pressButton(btn){
+  clickSound.currentTime=0; clickSound.play();
+  btn.classList.add('flash'); setTimeout(()=>btn.classList.remove('flash'),200);
+
+  const val=btn.textContent;
+
+  if(val==='AC'){display.value=''; shouldReset=false; pulseDisplay(); return;}
+  if(val==='+/-'){if(display.value) display.value=(parseFloat(display.value)*-1).toString(); pulseDisplay(); return;}
+  if(val==='%'){if(display.value) display.value=(parseFloat(display.value)/100).toString(); pulseDisplay(); return;}
+  if(val==='='){
+    try{display.value=eval(display.value);}catch{
+      display.value='Error';
+      display.classList.add('shake');
+      setTimeout(()=>display.classList.remove('shake'),300);
+    }
+    pulseDisplay();
+    shouldReset=true; return;
+  }
+  if(['/','*','-','+'].includes(val)){display.value+=val; pulseDisplay(); shouldReset=false; return;}
+  if(shouldReset){display.value=val; shouldReset=false;}else{display.value+=val;}
+  pulseDisplay();
+}
+
+function pulseDisplay(){
+  display.classList.add('pulse');
+  setTimeout(()=>display.classList.remove('pulse'),300);
+}
+
+function toggleMode(){document.body.classList.toggle('light');}
+</script>
+</body>
+</html>
